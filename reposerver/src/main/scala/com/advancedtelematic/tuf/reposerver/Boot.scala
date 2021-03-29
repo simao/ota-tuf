@@ -13,7 +13,8 @@ import com.advancedtelematic.libats.http.LogDirectives._
 import com.advancedtelematic.libats.http.VersionDirectives._
 import com.advancedtelematic.libats.http.monitoring.ServiceHealthCheck
 import com.advancedtelematic.libats.http.tracing.Tracing
-import com.advancedtelematic.libats.http.tracing.Tracing.ServerRequestTracing
+import com.advancedtelematic.libats
+.http.tracing.Tracing.ServerRequestTracing
 import com.advancedtelematic.libats.messaging.MessageBus
 import com.advancedtelematic.libats.slick.db.{BootMigrations, DatabaseSupport}
 import com.advancedtelematic.libats.slick.monitoring.DatabaseMetrics
@@ -91,7 +92,7 @@ class ReposerverBoot(override val appConfig: Config,
   import system.dispatcher
 
   def bind(): Future[ServerBinding] = {
-    log.info(s"Starting $version on http://$host:$port")
+    log.info(s"Starting ${nameVersion} on http://$host:$port")
 
     def keyStoreClient(implicit requestTracing: ServerRequestTracing) = KeyserverHttpClient(keyServerUri)
 
@@ -112,7 +113,7 @@ class ReposerverBoot(override val appConfig: Config,
     implicit val tracing = Tracing.fromConfig(appConfig, "reposerver")
 
     val routes: Route =
-      (versionHeaders(version) & requestMetrics(metricRegistry) & logResponseMetrics(projectName) & logRequestResult(("reposerver", Logging.DebugLevel))) {
+      (versionHeaders(nameVersion) & requestMetrics(metricRegistry) & logResponseMetrics(projectName) & logRequestResult(("reposerver", Logging.DebugLevel))) {
         tracing.traceRequests { implicit requestTracing =>
           new TufReposerverRoutes(keyStoreClient, NamespaceValidation.withDatabase, targetStore,
             messageBusPublisher,

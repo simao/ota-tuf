@@ -62,10 +62,8 @@ lazy val commonSettings = Seq(
   resolvers += "ATS Releases" at "https://nexus.ota.here.com/content/repositories/releases",
   resolvers += "ATS Snapshots" at "https://nexus.ota.here.com/content/repositories/snapshots",
   resolvers += "version99 Empty loggers" at "https://version99.qos.ch",
-  libatsVersion := "0.4.0-15-g2b67637-SNAPSHOT",
+  libatsVersion := "0.4.0-15-g006c435-SNAPSHOT",
   licenses += ("MPL-2.0", url("http://mozilla.org/MPL/2.0/")),
-  buildInfoOptions += BuildInfoOption.ToMap,
-  buildInfoOptions += BuildInfoOption.BuildTime,
   dependencyCheckAssemblyAnalyzerEnabled := Some(false)) ++
   Seq(inConfig(ItTest)(Defaults.testTasks): _*) ++
   Seq(inConfig(UnitTest)(Defaults.testTasks): _*) ++
@@ -96,13 +94,13 @@ lazy val sonarSettings = Seq(
 )
 
 lazy val libtuf = (project in file("libtuf"))
-  .enablePlugins(BuildInfoPlugin, Versioning.Plugin)
+  .enablePlugins(Versioning.Plugin)
   .configs(commonConfigs:_*)
   .settings(commonSettings)
   .settings(Publish.settings)
 
 lazy val libtuf_server = (project in file("libtuf-server"))
-  .enablePlugins(BuildInfoPlugin, Versioning.Plugin)
+  .enablePlugins(Versioning.Plugin)
   .configs(commonConfigs:_*)
   .settings(commonSettings)
   .settings(serverDependencies)
@@ -115,6 +113,7 @@ lazy val keyserver = (project in file("keyserver"))
   .settings(commonSettings)
   .settings(Packaging.docker("tuf-keyserver"))
   .settings(serverDependencies)
+  .settings(BuildInfoSettings("com.advancedtelematic.tuf.keyserver"))
   .dependsOn(libtuf)
   .dependsOn(libtuf_server)
 
@@ -124,6 +123,7 @@ lazy val reposerver = (project in file("reposerver"))
   .settings(commonSettings)
   .settings(serverDependencies)
   .settings(Packaging.docker("tuf-reposerver"))
+  .settings(BuildInfoSettings("com.advancedtelematic.tuf.reposerver"))
   .dependsOn(libtuf)
   .dependsOn(libtuf_server)
 

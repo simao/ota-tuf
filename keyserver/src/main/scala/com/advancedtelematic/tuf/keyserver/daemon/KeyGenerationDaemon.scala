@@ -44,7 +44,7 @@ class KeyserverDaemon(override val appConfig: Config, override val dbConfig: Con
 
     system.actorOf(KeyGeneratorLeader.props(), "keygen-leader")
 
-    val routes: Route = (versionHeaders(version) & logResponseMetrics(projectName)) {
+    val routes: Route = (versionHeaders(nameVersion) & logResponseMetrics(projectName)) {
       DbHealthResource(versionMap).route ~ prometheusMetricsRoutes
     }
 
@@ -52,8 +52,7 @@ class KeyserverDaemon(override val appConfig: Config, override val dbConfig: Con
   }
 }
 
-object DaemonBoot extends BootAppDefaultConfig with VersionInfo with BootAppDatabaseConfig {
-
+object DaemonBoot extends BootAppDefaultConfig with BootAppDatabaseConfig with VersionInfo {
   Security.addProvider(new BouncyCastleProvider())
 
   val keyserverDaemonBind = new KeyserverDaemon(appConfig, dbConfig, MetricsSupport.metricRegistry)

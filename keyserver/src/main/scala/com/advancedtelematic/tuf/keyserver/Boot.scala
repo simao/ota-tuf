@@ -51,12 +51,12 @@ class KeyserverBoot(override val appConfig: Config,
   private lazy val log = LoggerFactory.getLogger(this.getClass)
 
   def bind(): Future[ServerBinding] = {
-    log.info(s"Starting $version on http://$host:$port")
+    log.info(s"Starting ${nameVersion} on http://$host:$port")
 
     val tracing = Tracing.fromConfig(appConfig, projectName)
 
     val routes: Route =
-      (versionHeaders(version) & requestMetrics(metricRegistry) & logResponseMetrics(projectName)) {
+      (versionHeaders(nameVersion) & requestMetrics(metricRegistry) & logResponseMetrics(projectName)) {
         tracing.traceRequests { _ =>
           new TufKeyserverRoutes(metricsRoutes = prometheusMetricsRoutes).routes
         }
@@ -67,8 +67,7 @@ class KeyserverBoot(override val appConfig: Config,
 
 }
 
-object Boot extends BootAppDefaultConfig with VersionInfo with BootAppDatabaseConfig {
+object Boot extends BootAppDefaultConfig with BootAppDatabaseConfig with VersionInfo {
   Security.addProvider(new BouncyCastleProvider)
-
   new KeyserverBoot(appConfig, dbConfig, MetricsSupport.metricRegistry).bind()
 }
