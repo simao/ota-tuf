@@ -132,6 +132,7 @@ lazy val cli = (project in file("cli"))
   .configs(commonConfigs:_*)
   .settings(commonSettings)
   .settings(Publish.disable)
+  .settings(BuildInfoSettings("com.advancedtelematic.tuf.cli"))
   .settings(
     topLevelDirectory := Some("garage-sign"),
     executableScriptName := "garage-sign",
