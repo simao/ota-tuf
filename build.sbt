@@ -62,7 +62,7 @@ lazy val commonSettings = Seq(
   resolvers += "ATS Releases" at "https://nexus.ota.here.com/content/repositories/releases",
   resolvers += "ATS Snapshots" at "https://nexus.ota.here.com/content/repositories/snapshots",
   resolvers += "version99 Empty loggers" at "https://version99.qos.ch",
-  libatsVersion := "0.3.0-109-ge12f057",
+  libatsVersion := "0.4.0-15-g2b67637-SNAPSHOT",
   licenses += ("MPL-2.0", url("http://mozilla.org/MPL/2.0/")),
   buildInfoOptions += BuildInfoOption.ToMap,
   buildInfoOptions += BuildInfoOption.BuildTime,
@@ -113,7 +113,6 @@ lazy val keyserver = (project in file("keyserver"))
   .enablePlugins(BuildInfoPlugin, Versioning.Plugin, JavaAppPackaging)
   .configs(commonConfigs:_*)
   .settings(commonSettings)
-  .settings(Publish.disable)
   .settings(Packaging.docker("tuf-keyserver"))
   .settings(serverDependencies)
   .dependsOn(libtuf)
@@ -124,7 +123,6 @@ lazy val reposerver = (project in file("reposerver"))
   .configs(commonConfigs:_*)
   .settings(commonSettings)
   .settings(serverDependencies)
-  .settings(Publish.disable)
   .settings(Packaging.docker("tuf-reposerver"))
   .dependsOn(libtuf)
   .dependsOn(libtuf_server)

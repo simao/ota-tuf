@@ -25,7 +25,7 @@ import scala.concurrent._
 import scala.concurrent.Future
 import scala.util.Try
 
-class S3TargetStoreEngine(credentials: S3Credentials)(implicit val system: ActorSystem, val mat: ActorMaterializer) extends TargetStoreEngine {
+class S3TargetStoreEngine(credentials: S3Credentials)(implicit val system: ActorSystem) extends TargetStoreEngine {
 
   import system.dispatcher
 

@@ -5,7 +5,6 @@ import akka.http.scaladsl.model.Uri.Path
 import akka.http.scaladsl.model.Uri.Path.{Empty, Slash}
 import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.model.{StatusCodes, _}
-import akka.stream.ActorMaterializer
 import cats.syntax.show._
 import com.advancedtelematic.libats.data.ErrorCode
 import com.advancedtelematic.libats.http.Errors.{RawError, RemoteServiceError}
@@ -51,12 +50,12 @@ trait KeyserverClient {
 }
 
 object KeyserverHttpClient extends ServiceHttpClientSupport {
-  def apply(uri: Uri)(implicit system: ActorSystem, mat: ActorMaterializer, tracing: ServerRequestTracing): KeyserverHttpClient =
+  def apply(uri: Uri)(implicit system: ActorSystem, tracing: ServerRequestTracing): KeyserverHttpClient =
     new KeyserverHttpClient(uri, defaultHttpClient)
 }
 
 class KeyserverHttpClient(uri: Uri, httpClient: HttpRequest => Future[HttpResponse])
-                         (implicit system: ActorSystem, mat: ActorMaterializer, tracing: ServerRequestTracing)
+                         (implicit system: ActorSystem, tracing: ServerRequestTracing)
   extends TracingHttpClient(httpClient, "keyserver") with KeyserverClient {
 
   import KeyserverClient._

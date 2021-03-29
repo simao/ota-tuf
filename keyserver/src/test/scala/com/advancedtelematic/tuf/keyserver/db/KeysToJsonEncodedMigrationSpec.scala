@@ -17,8 +17,6 @@ class KeysToJsonEncodedMigrationSpec extends TufKeyserverSpec with TestKitBase w
 
   override implicit lazy val system: ActorSystem = ActorSystem(this.getClass.getSimpleName)
 
-  implicit val mat = ActorMaterializer()
-
   implicit val ec = ExecutionContext.Implicits.global
 
   val migration = new KeysToJsonEncodedMigration()
