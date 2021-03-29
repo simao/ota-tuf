@@ -45,7 +45,7 @@ class KeyserverDaemon(override val appConfig: Config, override val dbConfig: Con
     system.actorOf(KeyGeneratorLeader.props(), "keygen-leader")
 
     val routes: Route = (versionHeaders(nameVersion) & logResponseMetrics(projectName)) {
-      DbHealthResource(versionMap).route ~ prometheusMetricsRoutes
+      DbHealthResource(versionMap, metricRegistry = metricRegistry).route ~ prometheusMetricsRoutes
     }
 
     Http().bindAndHandle(routes, host, port)

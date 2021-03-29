@@ -58,7 +58,7 @@ class KeyserverBoot(override val appConfig: Config,
     val routes: Route =
       (versionHeaders(nameVersion) & requestMetrics(metricRegistry) & logResponseMetrics(projectName)) {
         tracing.traceRequests { _ =>
-          new TufKeyserverRoutes(metricsRoutes = prometheusMetricsRoutes).routes
+          new TufKeyserverRoutes(metricsRoutes = prometheusMetricsRoutes, metricRegistry = metricRegistry).routes
         }
       }
 

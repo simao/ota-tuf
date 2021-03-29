@@ -118,7 +118,7 @@ class ReposerverBoot(override val appConfig: Config,
           new TufReposerverRoutes(keyStoreClient, NamespaceValidation.withDatabase, targetStore,
             messageBusPublisher,
             prometheusMetricsRoutes,
-            Seq(keyserverHealthCheck)).routes
+            Seq(keyserverHealthCheck), metricRegistry).routes
         }
       }
 

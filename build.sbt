@@ -62,7 +62,7 @@ lazy val commonSettings = Seq(
   resolvers += "ATS Releases" at "https://nexus.ota.here.com/content/repositories/releases",
   resolvers += "ATS Snapshots" at "https://nexus.ota.here.com/content/repositories/snapshots",
   resolvers += "version99 Empty loggers" at "https://version99.qos.ch",
-  libatsVersion := "0.4.0-15-g006c435-SNAPSHOT",
+  libatsVersion := "0.4.0-17-ga03bec5-SNAPSHOT",
   licenses += ("MPL-2.0", url("http://mozilla.org/MPL/2.0/")),
   dependencyCheckAssemblyAnalyzerEnabled := Some(false)) ++
   Seq(inConfig(ItTest)(Defaults.testTasks): _*) ++
